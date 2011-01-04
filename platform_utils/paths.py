@@ -28,6 +28,6 @@ def app_data_path(app_name=None):
  return os.path.join(path, app_name)
 
 def prepare_app_data_dir(app_name):
- dir = app_data_dir(app_name):
+ dir = app_data_dir(app_name)
  if not os.path.exists(dir):
   os.mkdir(dir)
