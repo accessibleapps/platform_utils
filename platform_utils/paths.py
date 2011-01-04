@@ -21,8 +21,7 @@ def app_data_path(app_name):
  		raise ctypes.WinError()
   path = path.value
  elif plat == 'Darwin':
-  from AppKit import NSSearchPathForDirectoriesInDomains
-  path = NSSearchPathForDirectoriesInDomains(14, 1, True)[0]
+  path = os.path.join(os.path.expanduser('~'), 'Library', 'Application Support')
  elif plat == 'Linux':
   path = os.path.expanduser('~')
   app_name = '.%s' % app_name.replace(' ', '_')
