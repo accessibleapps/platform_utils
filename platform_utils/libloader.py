@@ -3,20 +3,26 @@ import platform
 import os
 
 TYPES = {
- 'Windows': (ctypes.LibraryLoader(ctypes.WinDLL), ctypes.WINFUNCTYPE),
- 'Linux': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE),
- 'Darwin': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE),
+ 'Windows': (ctypes.LibraryLoader(ctypes.WinDLL), ctypes.WINFUNCTYPE, '.dll'),
+ 'Linux': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, ['.so', '.so64']),
+ 'Darwin': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, '.dylib'),
 }
 
 def load_library(library, lib_path="../lib"):
- loader = TYPES[platform.system()][0]
+ which = TYPES[platform.system()]
+ loader = which[0]
+ ext = which[2]
  path = os.path.join(lib_path, library)
- try:
-  loaded = loader.LoadLibrary(path)
- except OSError:
-  if platform.system == 'Linux' and not path.endswith('64'):
-   path = '%s64' % path
-   loaded = loader.LoadLibrary(path)
+ if type(ext) == str:
+  return loader.LoadLibrary('%s%s' % (path, ext))
+ for n, i in enumerate(ext):
+  try:
+   loaded = loader.LoadLibrary('%s%s' % (path, ext))
+  except OSError:
+   if n < len(ext):
+    continue
+   else:
+    raise
  return loaded
 
 def get_functype():
