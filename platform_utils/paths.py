@@ -6,12 +6,12 @@ from functools import wraps
 
 def merge_paths(func):
  @wraps(func)
- def merge_paths_wrapper(*a):
-  return os.path.join(func(), *a).encode('UTF-8')
+ def merge_paths_wrapper(*a, **k):
+  return os.path.join(func(**k), *a).encode('UTF-8')
  return merge_paths_wrapper
 
 @merge_paths
-def app_data_path(app_name):
+def app_data_path(app_name=None):
  """Cross-platform method for determining where to put application data."""
  """Requires the name of the application"""
  plat = platform.system()
