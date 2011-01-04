@@ -31,3 +31,15 @@ def prepare_app_data_path(app_name):
  dir = app_data_path(app_name)
  if not os.path.exists(dir):
   os.mkdir(dir)
+
+def is_frozen():
+ """Return a bool indicating if application is compressed"""
+ import imp
+ return hasattr(sys, 'frozen') or imp.is_frozen("__main__")
+
+
+def app_path():
+ """Always determine the path to the main module, even when run with py2exe or otherwise frozen"""
+ if is_frozen():
+  return os.path.abspath(os.path.dirname(sys.executable))
+ return os.path.abspath(os.path.dirname(sys.argv[0]))
