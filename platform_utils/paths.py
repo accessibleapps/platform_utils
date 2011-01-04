@@ -10,6 +10,7 @@ def merge_paths(func):
   return os.path.join(func(), *a).encode('UTF-8')
  return merge_paths_wrapper
 
+@merge_paths
 def app_data_path(app_name):
  """Cross-platform method for determining where to put application data."""
  """Requires the name of the application"""
