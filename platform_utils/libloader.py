@@ -3,7 +3,6 @@ import platform
 import os
 
 TYPES = {
- 'Windows': (ctypes.LibraryLoader(ctypes.WinDLL), ctypes.WINFUNCTYPE, '.dll'),
  'Linux': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, ['.so', '.so64']),
  'Darwin': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, '.dylib'),
 }
