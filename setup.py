@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
  name = 'platform_utils',
- version = '0.1.1',
+ version = '0.1.2',
  description = 'Cross-platform utilities for accomplishing basic tasks',
  package_dir = {'platform_utils': 'platform_utils'},
  packages = find_packages(),
