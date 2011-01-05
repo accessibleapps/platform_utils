@@ -9,7 +9,7 @@ TYPES = {
 if platform.system() == 'Windows':
  TYPES['Windows'] = (ctypes.LibraryLoader(ctypes.WinDLL), ctypes.WINFUNCTYPE, '.dll'),
 
-def load_library(library, lib_path='', , ):
+def load_library(library, lib_path=''):
  which = TYPES[platform.system()]
  loader = which[0]
  ext = which[2]
