@@ -6,7 +6,7 @@ import paths
 RUN_REGKEY = ur"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 
 def is_installed(app_subkey):
- """Checks if the currently running copy is installed or portable variant. Requires the name of the application subkey under the uninstall section in Windows registry, and a full path to the application."""
+ """Checks if the currently running copy is installed or portable variant. Requires the name of the application subkey found under the uninstall section in Windows registry."""
 
  try:
   key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + app_subkey)
@@ -20,7 +20,7 @@ def is_installed(app_subkey):
   return False
 
 def getAutoStart(app_name):
- """Queries if the automatic startup should be set or not."""
+ """Queries if the automatic startup should be set for the application or not, depending on it's current state."""
 
  try:
   key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, RUN_REGKEY)
