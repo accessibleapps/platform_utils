@@ -1,7 +1,7 @@
 import _winreg
 import os
 import sys
-import paths
+from platform_utils import paths
 
 RUN_REGKEY = ur"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 
