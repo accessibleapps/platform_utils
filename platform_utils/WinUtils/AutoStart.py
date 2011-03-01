@@ -9,7 +9,7 @@ def is_installed(app_subkey):
  """Checks if the currently running copy is installed or portable variant. Requires the name of the application subkey found under the uninstall section in Windows registry."""
 
  try:
-  key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + app_subkey)
+  key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\%s" % app_subkey)
   inst_dir = _winreg.QueryValueEx(key,"InstallLocation")[0]
  except WindowsError:
   return False
