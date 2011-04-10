@@ -7,7 +7,7 @@ from functools import wraps
 def merge_paths(func):
  @wraps(func)
  def merge_paths_wrapper(*a, **k):
-  return os.path.join(func(**k), *a).encode('UTF-8')
+  return unicode(os.path.join(func(**k), *a))
  return merge_paths_wrapper
 
 def app_data_path(app_name=None):
