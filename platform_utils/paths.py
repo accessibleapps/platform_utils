@@ -44,3 +44,7 @@ def app_path():
  if is_frozen():
   return os.path.abspath(os.path.dirname(sys.executable))
  return os.path.abspath(os.path.dirname(sys.argv[0]))
+
+ def ensure_path(self, path):
+  if not os.path.exists(path):
+   os.makedirs(path)
