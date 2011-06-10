@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+__version__ = 0.19
+
 setup(
  name = 'platform_utils',
- version = '0.1.8',
+ version = __version__,
  description = 'Cross-platform utilities for accomplishing basic tasks',
  package_dir = {'platform_utils': 'platform_utils'},
  packages = find_packages(),
