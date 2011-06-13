@@ -38,13 +38,18 @@ def is_frozen():
  import imp
  return hasattr(sys, 'frozen') or imp.is_frozen("__main__")
 
+def get_executable():
+ if is_frozen():
+  return sys.executable
+ return sys.argv[0]
 
 def app_path():
  """Always determine the path to the main module, even when run with py2exe or otherwise frozen"""
- if is_frozen():
-  return os.path.abspath(os.path.dirname(sys.executable))
- return os.path.abspath(os.path.dirname(sys.argv[0]))
+ return os.path.abspath(os.path.dirname(get_executable()))
 
- def ensure_path(self, path):
+def executable_path():
+ return os.path.join(app_path(), get_executable())
+
+def ensure_path(path):
   if not os.path.exists(path):
    os.makedirs(path)
