@@ -7,7 +7,7 @@ TYPES = {
  'Darwin': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, '.dylib'),
 }
 if platform.system() == 'Windows':
- TYPES['Windows'] = (ctypes.LibraryLoader(ctypes.WinDLL), ctypes.WINFUNCTYPE, '.dll'),
+ TYPES['Windows'] = (ctypes.LibraryLoader(ctypes.WinDLL), ctypes.WINFUNCTYPE, '.dll')
 
 def load_library(library, lib_path=''):
  which = TYPES[platform.system()]
