@@ -47,7 +47,7 @@ def get_executable():
 def get_module():
  if is_frozen():
   return sys.executable
- return inspect.stack()[-2][1]
+ return inspect.stack()[2][1]
 
 
 def app_path():
