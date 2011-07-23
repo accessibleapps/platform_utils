@@ -45,8 +45,6 @@ def get_executable():
  return sys.argv[0]
 
 def get_module():
- if is_frozen():
-  return sys.executable
  return inspect.stack()[2][1]
 
 
