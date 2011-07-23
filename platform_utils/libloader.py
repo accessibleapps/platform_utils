@@ -13,7 +13,7 @@ if platform.system() == 'Windows':
 class LibraryLoadError(Exception): pass
 
 def load_library(library, lib_path=None):
- if not isinstance(lib_path, collections.Sequence):
+ if isinstance(lib_path, basestring):
   lib_path = [lib_path]
  for p in lib_path:
   path = os.path.join(p, library)
@@ -24,7 +24,7 @@ def load_library(library, lib_path=None):
   lib = _do_load(libs)
   if lib is not None:
    return lib
- raise LibraryLoadError('unable to load %r' % library)
+ raise LibraryLoadError('unable to load %r. Provided library path: %r' % (library, path))
 
 def _find_libs(path):
  ext = TYPES[platform.system()][2]
