@@ -1,3 +1,4 @@
+import inspect
 import platform
 import os
 import sys
@@ -43,9 +44,18 @@ def get_executable():
   return sys.executable
  return sys.argv[0]
 
+def get_module():
+ if is_frozen():
+  return sys.executable
+ return inspect.stack()[-2][1]
+
+
 def app_path():
  """Always determine the path to the main module, even when run with py2exe or otherwise frozen"""
  return os.path.abspath(os.path.dirname(get_executable()))
+
+def module_path():
+ return os.path.abspath(os.path.dirname(get_module()))
 
 def executable_path():
  return os.path.join(app_path(), get_executable())
