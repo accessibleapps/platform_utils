@@ -11,16 +11,19 @@ def merge_paths(func):
   return unicode(os.path.join(func(**k), *a))
  return merge_paths_wrapper
 
+def windows_path(path_id):
+ import ctypes
+ path = ctypes.create_unicode_buffer(260)
+ if ctypes.windll.shell32.SHGetFolderPathW(0, path_id, 0, 0, ctypes.byref(path)) != 0:
+ 	raise ctypes.WinError()
+ return path.value
+
 def app_data_path(app_name=None):
  """Cross-platform method for determining where to put application data."""
  """Requires the name of the application"""
  plat = platform.system()
  if plat == 'Windows':
-  import ctypes
-  path = ctypes.create_unicode_buffer(260)
-  if ctypes.windll.shell32.SHGetFolderPathW(0, 0x001a, 0, 0, ctypes.byref(path)) != 0:
- 		raise ctypes.WinError()
-  path = path.value
+  path = windows_path(0x01a)
  elif plat == 'Darwin':
   path = os.path.join(os.path.expanduser('~'), 'Library', 'Application Support')
  elif plat == 'Linux':
@@ -47,7 +50,6 @@ def get_executable():
 def get_module():
  return inspect.stack()[2][1]
 
-
 def app_path():
  """Always determine the path to the main module, even when run with py2exe or otherwise frozen"""
  return os.path.abspath(os.path.dirname(get_executable()))
@@ -61,3 +63,14 @@ def executable_path():
 def ensure_path(path):
   if not os.path.exists(path):
    os.makedirs(path)
+
+def documents_path():
+ """On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
+ plat = platform.system()
+ if plat == 'Windows':
+  return windows_path(0x005)
+ elif plat == 'Darwin':
+  path = os.path.join(os.path.expanduser('~'), 'Documents')
+ else:
+  path = os.path.expanduser('~')
+ return path
