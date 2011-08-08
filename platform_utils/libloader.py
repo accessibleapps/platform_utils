@@ -4,7 +4,7 @@ import platform
 import os
 
 TYPES = {
- 'Linux': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, {'x86': '.so', 'x86_64': '.so64'}),
+ 'Linux': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, '.so'),
  'Darwin': (ctypes.LibraryLoader(ctypes.CDLL), ctypes.CFUNCTYPE, '.dylib'),
 }
 if platform.system() == 'Windows':
@@ -12,15 +12,15 @@ if platform.system() == 'Windows':
 
 class LibraryLoadError(Exception): pass
 
-def load_library(library, lib_path=None):
- if isinstance(lib_path, basestring):
-  lib_path = [lib_path]
- for p in lib_path:
-  path = os.path.join(p, library)
-  lib = _find_lib(path)
-  lib = _do_load(lib)
-  if lib is not None:
-   return lib
+def load_library(library, x86_path='.', x64_path='.'):
+ if platform.machine() == 'x86':
+  path = os.path.join(x86_path, library)
+ elif platform.machine() == 'x86_64':
+  path = os.path.join(x64_path, library)
+ lib = _find_lib(path)
+ lib = _do_load(lib)
+ if lib is not None:
+  return lib
  raise LibraryLoadError('unable to load %r. Provided library path: %r' % (library, path))
 
 def _find_lib(path):
@@ -28,8 +28,6 @@ def _find_lib(path):
  possible_files = []
  if isinstance(ext, basestring):
   return '%s%s' % (path, ext)
- elif isinstance(ext, collections.Mapping):
-  return '%s%s' % (path, ext[platform.machine()])
  
 def _do_load(file):
  loader = TYPES[platform.system()][0] 
