@@ -5,13 +5,13 @@ import os
 
 TYPES = {
  'Linux': {
-  'loader': ctypes.LibraryLoader(ctypes.CDLL),
+  'loader': ctypes.CDLL,
   'functype': ctypes.CFUNCTYPE,
   'prefix': 'lib',
   'extension': '.so'
  },
  'Darwin': {
-  'loader': ctypes.LibraryLoader(ctypes.CDLL),
+  'loader': ctypes.CDLL,
   'functype': ctypes.CFUNCTYPE,
   'prefix': 'lib',
   'extension': '.dylib'
@@ -19,7 +19,7 @@ TYPES = {
 }
 if platform.system() == 'Windows':
  TYPES['Windows'] = {
-  'loader': ctypes.LibraryLoader(ctypes.WinDLL),
+  'loader': ctypes.WinDLL,
   'functype': ctypes.WINFUNCTYPE,
   'prefix': "",
   'extension': '.dll'
@@ -45,7 +45,7 @@ def _find_lib(path):
  
 def _do_load(file, *args, **kwargs):
  loader = TYPES[platform.system()]['loader'] 
- return loader.LoadLibrary(file, *args, **kwargs)
+ return loader(file, *args, **kwargs)
 
 def get_functype():
  return TYPES[platform.system()]['functype']
