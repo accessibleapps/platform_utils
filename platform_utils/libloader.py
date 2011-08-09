@@ -28,24 +28,25 @@ if platform.system() == 'Windows':
 class LibraryLoadError(Exception): pass
 
 def load_library(library, x86_path='.', x64_path='.', *args, **kwargs):
- library = '%s%s' % (TYPES[platform.system()]['prefix'], library)
- if platform.machine() == 'x86':
-  path = os.path.join(x86_path, library)
- elif platform.machine() == 'x86_64':
-  path = os.path.join(x64_path, library)
- lib = _find_lib(path)
- lib = _do_load(lib, *args, **kwargs)
- if lib is not None:
-  return lib
+ lib = find_library_path(library, x86_path=x86_path, x64_path=x64_path)
+ loaded = _do_load(lib, *args, **kwargs)
+ if loaded is not None:
+  return loaded
  raise LibraryLoadError('unable to load %r. Provided library path: %r' % (library, path))
 
-def _find_lib(path):
- ext = TYPES[platform.system()]['extension']
- return '%s%s' % (path, ext)
- 
 def _do_load(file, *args, **kwargs):
  loader = TYPES[platform.system()]['loader'] 
  return loader(file, *args, **kwargs)
+
+def find_library_path(libname, x86_path='.', x64_path='.'):
+ libname = '%s%s' % (TYPES[platform.system()]['prefix'], libname)
+ if platform.machine() == 'x86':
+  path = os.path.join(x86_path, libname)
+ elif platform.machine() == 'x86_64':
+  path = os.path.join(x64_path, libname)
+ ext = TYPES[platform.system()]['extension']
+ return '%s%s' % (path, ext)
+  
 
 def get_functype():
  return TYPES[platform.system()]['functype']
