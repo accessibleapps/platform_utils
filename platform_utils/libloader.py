@@ -40,13 +40,12 @@ def _do_load(file, *args, **kwargs):
 
 def find_library_path(libname, x86_path='.', x64_path='.'):
  libname = '%s%s' % (TYPES[platform.system()]['prefix'], libname)
- if platform.machine() == 'x86':
-  path = os.path.join(x86_path, libname)
- elif platform.machine() == 'x86_64':
+ if platform.machine() == 'x86_64':
   path = os.path.join(x64_path, libname)
+ else:
+  path = os.path.join(x86_path, libname)
  ext = TYPES[platform.system()]['extension']
  return '%s%s' % (path, ext)
   
-
 def get_functype():
  return TYPES[platform.system()]['functype']
