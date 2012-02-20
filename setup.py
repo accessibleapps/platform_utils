@@ -13,6 +13,6 @@ setup(
   'Intended Audience :: Developers',
   'Programming Language :: Python',
   'License :: OSI Approved :: MIT License',
-'Topic :: Software Development :: Libraries'
-],
+  'Topic :: Software Development :: Libraries'
+ ],
 )
