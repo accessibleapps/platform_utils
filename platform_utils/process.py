@@ -1,8 +1,9 @@
-from platform_utils import system
-
+import platform
 import ctypes
 import os
 import signal
+
+_system = platform.system()
 
 def kill_windows_process(pid):
  PROCESS_TERMINATE = 1
@@ -17,7 +18,7 @@ def kill_unix_process(pid):
   pass
 
 def kill_process(pid):
- if system == "windows":
+ if _system == "windows":
   kill_windows_process(pid)
- elif system == "Darwin":
+ elif _system == "Darwin":
   kill_unix_process(pid)
