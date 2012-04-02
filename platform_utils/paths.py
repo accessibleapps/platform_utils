@@ -7,12 +7,6 @@ import unicodedata
 
 from functools import wraps
 
-def merge_paths(func):
- @wraps(func)
- def merge_paths_wrapper(*a, **k):
-  return unicode(os.path.join(func(**k), *a))
- return merge_paths_wrapper
-
 def windows_path(path_id):
  import ctypes
  path = ctypes.create_unicode_buffer(260)
@@ -37,7 +31,7 @@ def prepare_app_data_path(app_name):
  """Creates the application's data directory, given its name."""
  dir = app_data_path(app_name)
  if not os.path.exists(dir):
-  os.mkdir(dir)
+  os.makedirs(dir)
 
 def is_frozen():
  """Return a bool indicating if application is compressed"""
@@ -50,6 +44,7 @@ def get_executable():
  return sys.argv[0]
 
 def get_module():
+ """Hacky method for deriving the caller of this function's module."""
  return inspect.stack()[2][1]
 
 def app_path():
@@ -61,10 +56,6 @@ def module_path():
 
 def executable_path():
  return os.path.join(app_path(), get_executable())
-
-def ensure_path(path):
-  if not os.path.exists(path):
-   os.makedirs(path)
 
 def documents_path():
  """On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
