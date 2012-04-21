@@ -1,6 +1,6 @@
 import platform
 
-def Copy(text):
+def copy(text):
  """Copies text to the clipboard."""
 
  plat = platform.system()
