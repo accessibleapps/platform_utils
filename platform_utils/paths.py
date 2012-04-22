@@ -74,3 +74,7 @@ def safe_filename(filename):
  valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
  cleanedFilename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')
  return ''.join(c for c in cleanedFilename if c in valid_chars)
+
+def ensure_path(path):
+ if not os.path.exists(path):
+  os.makedirs(path)
