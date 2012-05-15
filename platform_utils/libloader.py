@@ -45,7 +45,9 @@ def find_library_path(libname, x86_path='.', x64_path='.'):
  else:
   path = os.path.join(x86_path, libname)
  ext = TYPES[platform.system()]['extension']
- return '%s%s' % (path, ext)
+ path = '%s%s' % (path, ext)
+ return os.path.abspath(path)
+
   
 def get_functype():
  return TYPES[platform.system()]['functype']
