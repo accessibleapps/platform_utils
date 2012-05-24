@@ -18,7 +18,9 @@ def kill_unix_process(pid):
   pass
 
 def kill_process(pid):
- if _system == "windows":
+ if pid < 0:
+  return
+ elif _system == "windows":
   kill_windows_process(pid)
  elif _system == "Darwin":
   kill_unix_process(pid)
