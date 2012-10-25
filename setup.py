@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = 0.247
+__version__ = 0.248
 
 setup(
  name = 'platform_utils',

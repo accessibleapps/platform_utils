@@ -32,6 +32,7 @@ def prepare_app_data_path(app_name):
  dir = app_data_path(app_name)
  if not os.path.exists(dir):
   os.makedirs(dir)
+ return dir
 
 def is_frozen():
  """Return a bool indicating if application is compressed"""
