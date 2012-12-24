@@ -71,8 +71,9 @@ def documents_path():
 
 def safe_filename(filename):
  """Given a filename, returns a safe version with no characters that would not work on different platforms."""
+ SAFE_FILE_CHARS = "'-_.() "
  filename = unicode(filename)
- valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+ valid_chars = "%s%s%s" % (SAFE_FILE_CHARS, string.ascii_letters, string.digits)
  cleanedFilename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')
  return ''.join(c for c in cleanedFilename if c in valid_chars)
 
