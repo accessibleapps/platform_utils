@@ -5,21 +5,14 @@ import sys
 import string
 import unicodedata
 
-from functools import wraps
-
-def windows_path(path_id):
- import ctypes
- path = ctypes.create_unicode_buffer(260)
- if ctypes.windll.shell32.SHGetFolderPathW(0, path_id, 0, 0, ctypes.byref(path)) != 0:
- 	raise ctypes.WinError()
- return path.value
 
 def app_data_path(app_name=None):
  """Cross-platform method for determining where to put application data."""
  """Requires the name of the application"""
  plat = platform.system()
  if plat == 'Windows':
-  path = windows_path(0x01a)
+  import winpaths
+  path = winpaths.get_appdata()
  elif plat == 'Darwin':
   path = os.path.join(os.path.expanduser('~'), 'Library', 'Application Support')
  elif plat == 'Linux':
@@ -62,7 +55,8 @@ def documents_path():
  """On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
  plat = platform.system()
  if plat == 'Windows':
-  return windows_path(0x005)
+  import winpaths
+  path = winpaths.get_my_documents()
  elif plat == 'Darwin':
   path = os.path.join(os.path.expanduser('~'), 'Documents')
  else:
