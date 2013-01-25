@@ -27,6 +27,11 @@ def prepare_app_data_path(app_name):
   os.makedirs(dir)
  return dir
 
+def embedded_data_path():
+ if platform.system == 'Darwin' and is_frozen():
+  return os.path.abspath(os.path.join(app_path(), '..', 'resources'))
+ return app_path()
+
 def is_frozen():
  """Return a bool indicating if application is compressed"""
  import imp

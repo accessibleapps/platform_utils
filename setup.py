@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = 0.25
+__version__ = 0.26
 
 
 install_requires = []
