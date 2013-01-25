@@ -28,8 +28,8 @@ def prepare_app_data_path(app_name):
  return dir
 
 def embedded_data_path():
- if platform.system == 'Darwin' and is_frozen():
-  return os.path.abspath(os.path.join(app_path(), '..', 'resources'))
+ if platform.system() == 'Darwin' and is_frozen():
+  return os.path.abspath(os.path.join(app_path(), '..', 'Resources'))
  return app_path()
 
 def is_frozen():
