@@ -53,7 +53,12 @@ def get_module():
 def executable_directory():
  """Always determine the directory of the executable, even when run with py2exe or otherwise frozen"""
  executable = get_executable()
- return os.path.abspath(os.path.dirname(executable))
+ path = os.path.abspath(os.path.dirname(executable))
+ if is_frozen() and platform.system() == 'Darwin':
+  paths = os.path.split(os.path.split(path)[0])
+  paths[1] = 'MacOS'
+  path = os.path.join(*paths)
+ return path
 
 def app_path():
  """Return the root of the application's directory"""
