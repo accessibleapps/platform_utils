@@ -66,7 +66,7 @@ def module_path():
  return os.path.abspath(os.path.dirname(get_module()))
 
 def executable_path():
- return os.path.join(app_path(), get_executable())
+ return os.path.join(executable_directory(), get_executable())
 
 def documents_path():
  """On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
