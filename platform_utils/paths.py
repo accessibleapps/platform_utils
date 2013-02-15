@@ -41,7 +41,7 @@ def get_executable():
  if is_frozen():
   if platform.system() != 'Darwin':
    return sys.executable
-  items = os.listdir(executable_path(sys.executable))
+  items = os.listdir(os.path.abspath(os.path.dirname(sys.executable)))
   items.remove('python')
   return items[0]
  return sys.argv[0]
@@ -50,10 +50,9 @@ def get_module():
  """Hacky method for deriving the caller of this function's module."""
  return inspect.stack()[2][1]
 
-def executable_path(executable=None):
+def executable_path():
  """Always determine the path to the executable, even when run with py2exe or otherwise frozen"""
- if executable is None:
-  executable = get_executable()
+ executable = get_executable()
  return os.path.abspath(os.path.dirname(executable))
 
 def app_path():
