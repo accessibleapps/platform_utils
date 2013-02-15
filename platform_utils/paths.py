@@ -55,7 +55,7 @@ def executable_directory():
  executable = get_executable()
  path = os.path.abspath(os.path.dirname(executable))
  if is_frozen() and platform.system() == 'Darwin':
-  paths = list(os.path.split(path)[0])
+  paths = list(os.path.split(path))
   paths[1] = 'MacOS'
   path = os.path.join(*paths)
  return path
