@@ -41,7 +41,7 @@ def get_executable():
  if is_frozen():
   if platform.system() != 'Darwin':
    return sys.executable
-  items = os.listdir(app_path(sys.executable))
+  items = os.listdir(executable_path(sys.executable))
   items.remove('python')
   return items[0]
  return sys.argv[0]
