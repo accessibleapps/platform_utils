@@ -40,7 +40,9 @@ def is_frozen():
 def get_executable():
  if is_frozen():
   if platform.system() != 'Darwin':
-   return sys.executable
+   path = sys.executable
+   path = os.path.split(path)[1]
+   return path
   items = os.listdir(os.path.abspath(os.path.dirname(sys.executable)))
   items.remove('python')
   return items[0]
