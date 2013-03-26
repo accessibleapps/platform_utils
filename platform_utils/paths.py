@@ -93,7 +93,7 @@ def safe_filename(filename):
  filename = unicode(filename)
  new_filename = ''.join(c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
  #Windows doesn't like directory names ending in space, macs consider filenames beginning with a dot as hidden, and windows removes dots at the ends of filenames.
- return new_filename.strip().strip('.')
+ return new_filename.strip(' .')
 
 def ensure_path(path):
  if not os.path.exists(path):
