@@ -89,11 +89,11 @@ def documents_path():
 
 def safe_filename(filename):
  """Given a filename, returns a safe version with no characters that would not work on different platforms."""
- SAFE_FILE_CHARS = "'-_.() "
+ SAFE_FILE_CHARS = "'-_.()[]{}!@#$%^&+=`~ "
  filename = unicode(filename)
- valid_chars = "%s%s%s" % (SAFE_FILE_CHARS, string.ascii_letters, string.digits)
- cleanedFilename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')
- return ''.join(c for c in cleanedFilename if c in valid_chars)
+ new_filename = ''.join(c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
+ #Windows doesn't like directory names ending in space, macs consider filenames beginning with a dot as hidden, and windows removes dots at the ends of filenames.
+ return new_filename.strip().strip('.')
 
 def ensure_path(path):
  if not os.path.exists(path):
