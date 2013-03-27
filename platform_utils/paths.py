@@ -1,6 +1,7 @@
 import inspect
 import platform
 import os
+import subprocess
 import sys
 import string
 import unicodedata
@@ -101,3 +102,9 @@ def safe_filename(filename):
 def ensure_path(path):
  if not os.path.exists(path):
   os.makedirs(path)
+
+def start_file(path):
+ if platform.system() == 'Windows':
+  os.startfile(path)
+ else:
+  subprocess.Popen(['open', path])
