@@ -39,28 +39,30 @@ def is_frozen():
  return hasattr(sys, 'frozen') or imp.is_frozen("__main__")
 
 def get_executable():
+ """Returns the full executable path/name if frozen, or the full path/name of the main module if not."""
  if is_frozen():
   if platform.system() != 'Darwin':
-   path = sys.executable
-   path = os.path.split(path)[1]
-   return path
-  items = os.listdir(os.path.abspath(os.path.dirname(sys.executable)))
+   return sys.executable
+#On darwin, sys.executable points to python. We want the full path to the exe we ran.
+  exedir = os.path.abspath(os.path.dirname(sys.executable))
+  items = os.listdir(exedir)
   items.remove('python')
-  return items[0]
- return sys.argv[0]
+  return os.path.join(exedir, items[0])
+ #Not frozen
+ try:
+  import __main__
+  return os.path.abspath(__main__.__file__)
+ except AttributeError:
+  return sys.argv[0]
 
 def get_module():
  """Hacky method for deriving the caller of this function's module."""
- return inspect.stack()[2][1]
+ return inspect.getmodule(inspect.stack()[2][0]).__file__
 
 def executable_directory():
  """Always determine the directory of the executable, even when run with py2exe or otherwise frozen"""
  executable = get_executable()
  path = os.path.abspath(os.path.dirname(executable))
- if is_frozen() and platform.system() == 'Darwin':
-  paths = list(os.path.split(path))
-  paths[1] = 'MacOS'
-  path = os.path.join(*paths)
  return path
 
 def app_path():
@@ -72,12 +74,6 @@ def app_path():
 
 def module_path():
  return os.path.abspath(os.path.dirname(get_module()))
-
-def executable_path():
- executable = get_executable()
- if not executable:
-  return ''
- return os.path.join(executable_directory(), executable)
 
 def documents_path():
  """On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
