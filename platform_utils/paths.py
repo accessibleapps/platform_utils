@@ -24,9 +24,7 @@ def app_data_path(app_name=None):
 def prepare_app_data_path(app_name):
  """Creates the application's data directory, given its name."""
  dir = app_data_path(app_name)
- if not os.path.exists(dir):
-  os.makedirs(dir)
- return dir
+ return ensure_path(dir)
 
 def embedded_data_path():
  if platform.system() == 'Darwin' and is_frozen():
@@ -98,6 +96,7 @@ def safe_filename(filename):
 def ensure_path(path):
  if not os.path.exists(path):
   os.makedirs(path)
+ return path
 
 def start_file(path):
  if platform.system() == 'Windows':
