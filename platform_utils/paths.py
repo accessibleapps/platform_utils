@@ -104,3 +104,12 @@ def start_file(path):
   os.startfile(path)
  else:
   subprocess.Popen(['open', path])
+
+def get_applications_path():
+ """Return the directory where applications are commonly installed on the system."""
+ plat = platform.system()
+ if plat == 'Windows':
+  import winpaths
+  return winpaths.get_program_files()
+ elif plat == 'Darwin':
+  return '/Applications'
