@@ -6,8 +6,10 @@ import signal
 
 def kill_windows_process(pid):
  PROCESS_TERMINATE = 1
- handle = ctypes.windll.kernel32.OpenProcess(PROCESS_TERMINATE, False, pid)
+ SYNCHRONIZE=1048576
+ handle = ctypes.windll.kernel32.OpenProcess(PROCESS_TERMINATE | SYNCHRONIZE, False, pid)
  ctypes.windll.kernel32.TerminateProcess(handle, -1)
+ ctypes.windll.kernel32.WaitForSingleObject(handle, 1000)
  ctypes.windll.kernel32.CloseHandle(handle)
 
 def kill_unix_process(pid):
