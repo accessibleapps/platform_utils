@@ -53,9 +53,9 @@ def get_executable():
  except AttributeError:
   return sys.argv[0]
 
-def get_module():
+def get_module(level=2):
  """Hacky method for deriving the caller of this function's module."""
- return inspect.getmodule(inspect.stack()[2][0]).__file__
+ return inspect.getmodule(inspect.stack()[level][0]).__file__
 
 def executable_directory():
  """Always determine the directory of the executable, even when run with py2exe or otherwise frozen"""
@@ -70,8 +70,8 @@ def app_path():
   path = os.path.abspath(os.path.join(path, '..', '..'))
  return path
 
-def module_path():
- return os.path.abspath(os.path.dirname(get_module()))
+def module_path(level=2):
+ return os.path.abspath(os.path.dirname(get_module(level)))
 
 def documents_path():
  """On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
