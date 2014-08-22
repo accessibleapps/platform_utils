@@ -5,10 +5,16 @@
 import sys
 if hasattr(sys,"frozen"): # true only if we are running as a py2exe app
  class Blackhole(object):
+
   def write(self,text):
    pass
+
   def flush(self):
    pass
+
+  def isatty(self):
+   return False
+
  sys.stdout = Blackhole()
  sys.stderr = Blackhole()
  del Blackhole
