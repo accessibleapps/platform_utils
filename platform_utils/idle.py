@@ -5,6 +5,7 @@ system = platform.system()
 def get_user_idle_time():
  if system == 'Windows':
   return get_user_idle_time_windows()
+ raise NotImplementedError("This function is not yet implemented for %s" % system)
 
 
 def get_user_idle_time_windows():
