@@ -41,8 +41,10 @@ def get_text_windows():
 	import win32clipboard
 	import win32con
 	win32clipboard.OpenClipboard()
-	text = win32clipboard.GetClipboardData(win32con.CF_UNICODETEXT)
-	win32clipboard.CloseClipboard()
+	try:
+		text = win32clipboard.GetClipboardData(win32con.CF_UNICODETEXT)
+	finally:
+		win32clipboard.CloseClipboard()
 	return text
 
 def get_text():
