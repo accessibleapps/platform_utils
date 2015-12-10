@@ -5,9 +5,11 @@ def set_text_windows(text):
 	import win32clipboard
 	import win32con
 	win32clipboard.OpenClipboard()
-	win32clipboard.EmptyClipboard()
-	win32clipboard.SetClipboardText(text, win32con.CF_UNICODETEXT)
-	win32clipboard.CloseClipboard()
+	try:
+		win32clipboard.EmptyClipboard()
+		win32clipboard.SetClipboardText(text, win32con.CF_UNICODETEXT)
+	finally:
+		win32clipboard.CloseClipboard()
 
 def set_text_gtk(text):
 	import gtk
