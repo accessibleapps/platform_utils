@@ -6,17 +6,25 @@ import sys
 import string
 import unicodedata
 
+plat = platform.system()
+is_windows = plat == 'Windows'
+is_mac = plat == 'Darwin'
+is_linux = plat == 'Linux'
+
+#ugly little monkeypatch to make the winpaths module work on Python 3
+if is_windows:
+	import ctypes
+	ctypes.wintypes.create_unicode_buffer = ctypes.create_unicode_buffer
+	import winpaths
 
 def app_data_path(app_name=None):
 	"""Cross-platform method for determining where to put application data."""
 	"""Requires the name of the application"""
-	plat = platform.system()
-	if plat == 'Windows':
-		import winpaths
+	if is_windows:
 		path = winpaths.get_appdata()
-	elif plat == 'Darwin':
+	elif is_mac:
 		path = os.path.join(os.path.expanduser('~'), 'Library', 'Application Support')
-	elif plat == 'Linux':
+	elif is_linux:
 		path = os.path.expanduser('~')
 		app_name = '.%s' % app_name.replace(' ', '_')
 	return os.path.join(path, app_name)
@@ -27,7 +35,7 @@ def prepare_app_data_path(app_name):
 	return ensure_path(dir)
 
 def embedded_data_path():
-	if platform.system() == 'Darwin' and is_frozen():
+	if is_mac and is_frozen():
 		return os.path.abspath(os.path.join(executable_directory(), '..', 'Resources'))
 	return app_path()
 
@@ -39,9 +47,9 @@ def is_frozen():
 def get_executable():
 	"""Returns the full executable path/name if frozen, or the full path/name of the main module if not."""
 	if is_frozen():
-		if platform.system() != 'Darwin':
+		if not is_mac:
 			return sys.executable
-#On darwin, sys.executable points to python. We want the full path to the exe we ran.
+#On Mac, sys.executable points to python. We want the full path to the exe we ran.
 		exedir = os.path.abspath(os.path.dirname(sys.executable))
 		items = os.listdir(exedir)
 		items.remove('python')
@@ -66,7 +74,7 @@ def executable_directory():
 def app_path():
 	"""Return the root of the application's directory"""
 	path = executable_directory()
-	if is_frozen() and platform.system() == 'Darwin':
+	if is_frozen() and is_mac:
 		path = os.path.abspath(os.path.join(path, '..', '..'))
 	return path
 
@@ -75,11 +83,9 @@ def module_path(level=2):
 
 def documents_path():
 	"""On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
-	plat = platform.system()
-	if plat == 'Windows':
-		import winpaths
+	if is_windows:
 		path = winpaths.get_my_documents()
-	elif plat == 'Darwin':
+	elif is_mac:
 		path = os.path.join(os.path.expanduser('~'), 'Documents')
 	else:
 		path = os.path.expanduser('~')
@@ -99,16 +105,14 @@ def ensure_path(path):
 	return path
 
 def start_file(path):
-	if platform.system() == 'Windows':
+	if is_windows:
 		os.startfile(path)
 	else:
 		subprocess.Popen(['open', path])
 
 def get_applications_path():
 	"""Return the directory where applications are commonly installed on the system."""
-	plat = platform.system()
-	if plat == 'Windows':
-		import winpaths
+	if is_windows:
 		return winpaths.get_program_files()
-	elif plat == 'Darwin':
+	elif is_mac:
 		return '/Applications'
