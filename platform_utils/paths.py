@@ -14,6 +14,7 @@ is_linux = plat == 'Linux'
 #ugly little monkeypatch to make the winpaths module work on Python 3
 if is_windows:
 	import ctypes
+	import ctypes.wintypes
 	ctypes.wintypes.create_unicode_buffer = ctypes.create_unicode_buffer
 	import winpaths
 
