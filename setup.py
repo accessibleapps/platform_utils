@@ -6,7 +6,7 @@ __version__ = 0.40
 install_requires = []
 import platform
 if platform.system() == 'Windows':
-	install_requires.append('winpaths')
+	install_requires += ['winpaths', 'pypiwin32']
 
 
 setup(
