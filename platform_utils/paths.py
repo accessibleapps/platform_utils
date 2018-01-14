@@ -18,6 +18,11 @@ if is_windows:
 	ctypes.wintypes.create_unicode_buffer = ctypes.create_unicode_buffer
 	import winpaths
 
+try:
+	unicode
+except NameError:
+	unicode = str
+
 def app_data_path(app_name=None):
 	"""Cross-platform method for determining where to put application data."""
 	"""Requires the name of the application"""
