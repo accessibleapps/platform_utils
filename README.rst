@@ -7,7 +7,6 @@ Platform_utils is a library which provides several cross-platform utilities, inc
 * path manipulation - allows you to do several things with paths including getting the path to store application data, creating the application data directory, checking whether the app is frozen, etc.
 * clipboard - allows getting/setting clipboard text.
 * idle - allows getting the user idle time on Windows.
-* web_browser - allows opening a URL.
 * process - allows killing processes on Windows and Unix.
 * shell_integration - adds something to the context menu on Windows.
 * blackhole - disables stdout/stderr when using py2exe.
