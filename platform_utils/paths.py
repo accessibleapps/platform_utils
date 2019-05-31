@@ -55,10 +55,11 @@ def get_executable():
 	if is_frozen():
 		if not is_mac:
 			return sys.executable
-#On Mac, sys.executable points to python. We want the full path to the exe we ran.
+		#On Mac, sys.executable points to python. We want the full path to the exe we ran.
 		exedir = os.path.abspath(os.path.dirname(sys.executable))
 		items = os.listdir(exedir)
-		items.remove('python')
+		if 'python' in items:
+			items.remove('python')
 		return os.path.join(exedir, items[0])
 	#Not frozen
 	try:
