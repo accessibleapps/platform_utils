@@ -18,10 +18,23 @@ def set_text_gtk(text):
 	cb.store()
 
 def set_text_osx(text):
-	import Carbon.Scrap
-	Carbon.Scrap.ClearCurrentScrap()
-	scrap = Carbon.Scrap.GetCurrentScrap()
-	scrap.PutScrapFlavor('TEXT', 0, text)
+	scrap=True
+	try:
+		import Carbon.Scrap
+	except ModuleNotFoundError:
+		scrap=False
+	if scrap:
+		Carbon.Scrap.ClearCurrentScrap()
+		scrap = Carbon.Scrap.GetCurrentScrap()
+		scrap.PutScrapFlavor('TEXT', 0, text)
+	else:
+		try:
+			text=text.encode()
+		except AttributeError:
+			pass
+		import subprocess
+		s=subprocess.Popen("pbcopy", stdin=subprocess.PIPE)
+		s.communicate(text)
 
 
 def set_text(text):
