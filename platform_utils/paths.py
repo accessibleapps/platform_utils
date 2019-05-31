@@ -86,6 +86,7 @@ def app_path():
 	return path
 
 def module_path(level=2):
+	"""Return path for the caller of this functions module"""
 	return os.path.abspath(os.path.dirname(get_module(level)))
 
 def documents_path():
@@ -107,6 +108,7 @@ def safe_filename(filename):
 	return new_filename.strip(' .')
 
 def ensure_path(path):
+	"""Ensure existence of a path by creating all subdirectories."""
 	if not os.path.exists(path):
 		os.makedirs(path)
 	return path

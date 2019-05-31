@@ -3,6 +3,10 @@ import platform
 system = platform.system()
 
 def get_user_idle_time():
+	"""
+	Return the amount of time (in seconds) that the user is said to be idle.
+	This is normally obtained from a lack of keyboard and/or mouse input.
+	"""
 	if system == 'Windows':
 		return get_user_idle_time_windows()
 	raise NotImplementedError("This function is not yet implemented for %s" % system)
