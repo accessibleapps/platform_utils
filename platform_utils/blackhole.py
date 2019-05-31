@@ -5,6 +5,7 @@
 import sys
 if hasattr(sys,"frozen"): # true only if we are running as a py2exe app
 	class Blackhole(object):
+		"""Mock file object that does nothing."""
 
 		def write(self,text):
 			pass

@@ -19,6 +19,7 @@ def kill_unix_process(pid):
 		pass
 
 def kill_process(pid):
+	"""Forcefully kills a process."""
 	if pid < 0:
 		return
 	if platform.system() == 'Windows':
