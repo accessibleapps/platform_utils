@@ -33,7 +33,7 @@ def set_text_osx(text):
 		except AttributeError:
 			pass
 		import subprocess
-		s=subprocess.Popen("pbcopy", stdin=subprocess.PIPE)
+		s=subprocess.Popen('pbcopy', stdin=subprocess.PIPE)
 		s.communicate(text)
 
 
@@ -62,9 +62,22 @@ def get_text_windows():
 		win32clipboard.CloseClipboard()
 	return text
 
+def get_text_osx():
+	import subprocess
+	s=subprocess.Popen('pbpaste', stdout=subprocess.PIPE)
+	result=s.communicate()[0]
+	try:
+		result=result.decode()
+	except UnicodeDecodeError:
+		pass
+	return result
+
+
 def get_text():
 	plat = platform.system()
 	if plat == 'Windows':
 		return get_text_windows()
+	elif plat == 'Darwin':
+		return get_text_osx()
 	else:
 		raise NotImplementedError("Cannot get text from clipboard on platform %s" % plat)
