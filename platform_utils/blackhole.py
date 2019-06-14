@@ -3,21 +3,22 @@
 # Just import this file and it should go away
 
 import sys
-if hasattr(sys,"frozen"): # true only if we are running as a py2exe app
-	class Blackhole(object):
-		"""Mock file object that does nothing."""
 
-		def write(self,text):
-			pass
+if hasattr(sys, "frozen"):  # true only if we are running as a py2exe app
 
-		def flush(self):
-			pass
+    class Blackhole(object):
+        """Mock file object that does nothing."""
 
-		def isatty(self):
-			return False
+        def write(self, text):
+            pass
 
-	sys.stdout = Blackhole()
-	sys.stderr = Blackhole()
-	del Blackhole
-	del sys
+        def flush(self):
+            pass
 
+        def isatty(self):
+            return False
+
+    sys.stdout = Blackhole()
+    sys.stderr = Blackhole()
+    del Blackhole
+    del sys
