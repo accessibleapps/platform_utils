@@ -97,6 +97,13 @@ def app_path():
     return path
 
 
+def is_interactive():
+	"""Returns True if the script is being ran from the interactive interpreter.
+	Can be useful for providing additional information when debugging.
+	"""
+	import __main__
+	return not hasattr(__main__, "__file__")
+
 def module_path(level=2):
     """Return path for the caller of this functions module"""
     return os.path.abspath(os.path.dirname(get_module(level)))
