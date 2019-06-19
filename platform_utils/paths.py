@@ -26,7 +26,14 @@ except NameError:
 
 
 def app_data_path(app_name=None):
-    """Cross-platform method for determining where to put application data."""
+    """Cross-platform method for determining where to put application data.
+
+    Args:
+      app_name:  (Default value = None)
+
+    Returns:
+
+    """
     """Requires the name of the application"""
     if is_windows:
         path = winpaths.get_appdata()
@@ -39,19 +46,27 @@ def app_data_path(app_name=None):
 
 
 def prepare_app_data_path(app_name):
-    """Creates the application's data directory, given its name."""
+    """Creates the application's data directory, given its name.
+
+    Args:
+      app_name: 
+
+    Returns:
+
+    """
     dir = app_data_path(app_name)
     return ensure_path(dir)
 
 
 def embedded_data_path():
+    """ """
     if is_mac and is_frozen():
         return os.path.abspath(os.path.join(executable_directory(), "..", "Resources"))
     return app_path()
 
 
 def is_frozen():
-    """Return a bool indicating if application is compressed"""
+    """ """
     import imp
 
     return hasattr(sys, "frozen") or imp.is_frozen("__main__")
@@ -78,7 +93,14 @@ def get_executable():
 
 
 def get_module(level=2):
-    """Hacky method for deriving the caller of this function's module."""
+    """Hacky method for deriving the caller of this function's module.
+
+    Args:
+      level:  (Default value = 2)
+
+    Returns:
+
+    """
     return inspect.getmodule(inspect.stack()[level][0]).__file__
 
 
@@ -90,7 +112,7 @@ def executable_directory():
 
 
 def app_path():
-    """Return the root of the application's directory"""
+    """ """
     path = executable_directory()
     if is_frozen() and is_mac:
         path = os.path.abspath(os.path.join(path, "..", ".."))
@@ -98,14 +120,27 @@ def app_path():
 
 
 def is_interactive():
-	"""Returns True if the script is being ran from the interactive interpreter.
-	Can be useful for providing additional information when debugging.
-	"""
-	import __main__
-	return not hasattr(__main__, "__file__")
+    """Returns True if the script is being ran from the interactive interpreter.
+        Can be useful for providing additional information when debugging.
+
+    Args:
+
+    Returns:
+
+    """
+    import __main__
+    return not hasattr(__main__, "__file__")
 
 def module_path(level=2):
-    """Return path for the caller of this functions module"""
+    """
+
+    Args:
+      level:  (Default value = 2)
+
+    Returns:
+      
+
+    """
     return os.path.abspath(os.path.dirname(get_module(level)))
 
 
@@ -121,7 +156,14 @@ def documents_path():
 
 
 def safe_filename(filename):
-    """Given a filename, returns a safe version with no characters that would not work on different platforms."""
+    """Given a filename, returns a safe version with no characters that would not work on different platforms.
+
+    Args:
+      filename: 
+
+    Returns:
+
+    """
     SAFE_FILE_CHARS = "'-_.()[]{}!@#$%^&+=`~ "
     filename = unicode(filename)
     new_filename = "".join(c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
@@ -130,13 +172,28 @@ def safe_filename(filename):
 
 
 def ensure_path(path):
-    """Ensure existence of a path by creating all subdirectories."""
+    """Ensure existence of a path by creating all subdirectories.
+
+    Args:
+      path: 
+
+    Returns:
+
+    """
     if not os.path.exists(path):
         os.makedirs(path)
     return path
 
 
 def start_file(path):
+    """
+
+    Args:
+      path: 
+
+    Returns:
+
+    """
     if is_windows:
         os.startfile(path)
     else:
@@ -144,7 +201,7 @@ def start_file(path):
 
 
 def get_applications_path():
-    """Return the directory where applications are commonly installed on the system."""
+    """ """
     if is_windows:
         return winpaths.get_program_files()
     elif is_mac:

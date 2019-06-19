@@ -5,9 +5,13 @@ system = platform.system()
 
 def get_user_idle_time():
     """
-	Return the amount of time (in seconds) that the user is said to be idle.
-	This is normally obtained from a lack of keyboard and/or mouse input.
-	"""
+
+    Args:
+
+    Returns:
+      This is normally obtained from a lack of keyboard and/or mouse input.
+
+    """
     if system == "Windows":
         return get_user_idle_time_windows()
     elif system == "Darwin":
@@ -16,9 +20,11 @@ def get_user_idle_time():
 
 
 def get_user_idle_time_windows():
+    """ """
     from ctypes import Structure, windll, c_uint, sizeof, byref
 
     class LASTINPUTINFO(Structure):
+        """ """
         _fields_ = [("cbSize", c_uint), ("dwTime", c_uint)]
 
     lastInputInfo = LASTINPUTINFO()
@@ -29,6 +35,7 @@ def get_user_idle_time_windows():
 
 
 def get_user_idle_time_mac():
+    """ """
     import subprocess
     import re
 

@@ -2,6 +2,14 @@ import platform
 
 
 def set_text_windows(text):
+    """
+
+    Args:
+      text: 
+
+    Returns:
+
+    """
     import win32clipboard
     import win32con
 
@@ -14,6 +22,14 @@ def set_text_windows(text):
 
 
 def set_text_gtk(text):
+    """
+
+    Args:
+      text: 
+
+    Returns:
+
+    """
     import gtk
 
     cb = gtk.Clipboard()
@@ -22,6 +38,14 @@ def set_text_gtk(text):
 
 
 def set_text_osx(text):
+    """
+
+    Args:
+      text: 
+
+    Returns:
+
+    """
     scrap = True
     try:
         import Carbon.Scrap
@@ -43,7 +67,14 @@ def set_text_osx(text):
 
 
 def set_text(text):
-    """Copies text to the clipboard."""
+    """Copies text to the clipboard.
+
+    Args:
+      text: 
+
+    Returns:
+
+    """
     plat = platform.system()
     if plat == "Windows":
         set_text_windows(text)
@@ -59,6 +90,7 @@ copy = set_text
 
 
 def get_text_windows():
+    """ """
     import win32clipboard
     import win32con
 
@@ -71,6 +103,7 @@ def get_text_windows():
 
 
 def get_text_osx():
+    """ """
     import subprocess
 
     s = subprocess.Popen("pbpaste", stdout=subprocess.PIPE)
@@ -83,6 +116,7 @@ def get_text_osx():
 
 
 def get_text():
+    """ """
     plat = platform.system()
     if plat == "Windows":
         return get_text_windows()
