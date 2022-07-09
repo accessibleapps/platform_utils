@@ -1,9 +1,8 @@
-import unittest2
+import unittest
 from platform_utils import paths
 
 
-class TestModulePath(unittest2.TestCase):
+class TestModulePath(unittest.TestCase):
 
-	def test_module_path(self):
-		print paths.module_path()
-		self.assertTrue(paths.module_path().endswith('tests'))
+    def test_module_path(self):
+        self.assertTrue(paths.module_path().endswith('tests'))
