@@ -6,10 +6,19 @@ import sys
 import string
 import unicodedata
 
+
+def is_frozen():
+    """ """
+    import imp
+
+    return hasattr(sys, "frozen") or imp.is_frozen("__main__")
+
+
 plat = platform.system()
 is_windows = plat == "Windows"
 is_mac = plat == "Darwin"
 is_linux = plat == "Linux"
+is_pyinstaller = is_frozen() and getattr(sys, '_MEIPASS', False)
 
 # ugly little monkeypatch to make the winpaths module work on Python 3
 if is_windows:
@@ -25,7 +34,7 @@ except NameError:
     unicode = str
 
 
-def app_data_path(app_name=None):
+def app_data_path(app_name):
     """Cross-platform method for determining where to put application data.
 
     Args:
@@ -38,10 +47,13 @@ def app_data_path(app_name=None):
     if is_windows:
         path = winpaths.get_appdata()
     elif is_mac:
-        path = os.path.join(os.path.expanduser("~"), "Library", "Application Support")
+        path = os.path.join(os.path.expanduser(
+            "~"), "Library", "Application Support")
     elif is_linux:
         path = os.path.expanduser("~")
         app_name = ".%s" % app_name.replace(" ", "_")
+    else:
+        raise RuntimeError("Unsupported platform")
     return os.path.join(path, app_name)
 
 
@@ -63,13 +75,6 @@ def embedded_data_path():
     if is_mac and is_frozen():
         return os.path.abspath(os.path.join(executable_directory(), "..", "Resources"))
     return app_path()
-
-
-def is_frozen():
-    """ """
-    import imp
-
-    return hasattr(sys, "frozen") or imp.is_frozen("__main__")
 
 
 def get_executable():
@@ -106,6 +111,8 @@ def get_module(level=2):
 
 def executable_directory():
     """Always determine the directory of the executable, even when run with py2exe or otherwise frozen"""
+    if is_pyinstaller:
+        return sys._MEIPASS
     executable = get_executable()
     path = os.path.abspath(os.path.dirname(executable))
     return path
@@ -131,6 +138,7 @@ def is_interactive():
     import __main__
     return not hasattr(__main__, "__file__")
 
+
 def module_path(level=2):
     """
 
@@ -138,7 +146,7 @@ def module_path(level=2):
       level:  (Default value = 2)
 
     Returns:
-      
+
 
     """
     return os.path.abspath(os.path.dirname(get_module(level)))
@@ -166,7 +174,8 @@ def safe_filename(filename):
     """
     SAFE_FILE_CHARS = "'-_.()[]{}!@#$%^&+=`~ "
     filename = unicode(filename)
-    new_filename = "".join(c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
+    new_filename = "".join(
+        c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
     # Windows doesn't like directory names ending in space, macs consider filenames beginning with a dot as hidden, and windows removes dots at the ends of filenames.
     return new_filename.strip(" .")
 

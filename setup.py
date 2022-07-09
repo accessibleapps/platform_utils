@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 import io
 
-__version__ = 0.41
+__version__ = '0.42'
 
 
 setup(
     name="platform_utils",
-    author = "Christopher Toth",
-    author_email = "q@q-continuum.net",
+    author="Christopher Toth",
+    author_email="q@q-continuum.net",
     version=__version__,
     description="""Cross-platform utilities for accomplishing some tasks that the stdlib isn't equipped to provide""",
     long_description=io.open("README.rst", encoding="UTF8").read(),
