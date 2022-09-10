@@ -1,10 +1,9 @@
 import inspect
-import platform
 import os
+import platform
+import string
 import subprocess
 import sys
-import string
-import unicodedata
 
 
 def is_frozen():
@@ -72,8 +71,6 @@ def prepare_app_data_path(app_name):
 
 def embedded_data_path():
     """ """
-    if is_mac and is_frozen():
-        return os.path.abspath(os.path.join(executable_directory(), "..", "Resources"))
     return app_path()
 
 
