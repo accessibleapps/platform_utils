@@ -72,7 +72,7 @@ def prepare_app_data_path(app_name):
 def embedded_data_path():
     """ """
     if is_mac and is_frozen():
-        return os.path.join(app_path(), 'Contents', 'MacOS')
+        return os.path.join(os.path.abspath(get_executable()), 'Contents', 'MacOS')
     return app_path()
 
 
