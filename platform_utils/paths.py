@@ -118,8 +118,6 @@ def executable_directory():
 def app_path():
     """ """
     path = executable_directory()
-    if is_frozen() and is_mac:
-        path = os.path.abspath(os.path.join(path, "..", ".."))
     return path
 
 
