@@ -10,7 +10,7 @@ def is_frozen():
     """ """
     import imp
 
-    return hasattr(sys, "frozen") or imp.is_frozen("__main__")
+    return hasattr(sys, "frozen") or '__compiled__' in globals() or imp.is_frozen("__main__")
 
 
 plat = platform.system()
