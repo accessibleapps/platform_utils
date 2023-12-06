@@ -8,9 +8,11 @@ import sys
 
 def is_frozen():
     """ """
-    import imp
+    # imp was removed in Python 3.12, but _imp still contains is_frozen.
+    # This is what cffi (https://cffi.readthedocs.io) uses.
+    import _imp
 
-    return hasattr(sys, "frozen") or '__compiled__' in globals() or imp.is_frozen("__main__")
+    return hasattr(sys, "frozen") or '__compiled__' in globals() or _imp.is_frozen("__main__")
 
 
 plat = platform.system()
