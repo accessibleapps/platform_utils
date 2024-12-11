@@ -7,3 +7,5 @@ __pycache__/
 *.log
 *.diff
 *.egg-info
+.aider*
+.env

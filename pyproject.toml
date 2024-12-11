@@ -12,17 +12,15 @@ description = "Cross-platform utilities for accomplishing some tasks that the st
 readme = "README.rst"
 license = {file = "LICENSE"}
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Stable",
     "Intended Audience :: Developers", 
     "Programming Language :: Python",
     "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries",
 ]
-
-[project.optional-dependencies]
-win32 = [
-    "pywin32",
-    "winpaths",
+dependencies = [
+    "pywin32; sys_platform == 'win32'",
+    "winpaths; sys_platform == 'win32'",
 ]
 
 [tool.setuptools]
