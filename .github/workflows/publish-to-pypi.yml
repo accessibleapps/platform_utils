@@ -74,11 +74,11 @@ jobs:
         pip install wheel
         HASH=$(git rev-parse --short HEAD)
         for wheel in dist/*.whl; do
-          NEW_WHEEL=$(echo $wheel | sed "s/-\([0-9.]*\)-/-\1.dev${HASH}-/")
+          NEW_WHEEL=$(echo $wheel | sed "s/-\([0-9.]*\)-/-\1.dev0+g${HASH}-/")
           mv "$wheel" "$NEW_WHEEL"
         done
         for sdist in dist/*.tar.gz; do
-          NEW_SDIST=$(echo $sdist | sed "s/-\([0-9.]*\)\./-\1.dev${HASH}./")
+          NEW_SDIST=$(echo $sdist | sed "s/-\([0-9.]*\)\./-\1.dev0+g${HASH}./")
           mv "$sdist" "$NEW_SDIST"
         done
     - name: Publish distribution 📦 to TestPyPI
