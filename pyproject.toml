@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "platform_utils"
+version = "1.5.1"
+authors = [
+    {name = "Christopher Toth", email = "q@q-continuum.net"},
+]
+description = "Cross-platform utilities for accomplishing some tasks that the stdlib isn't equipped to provide"
+readme = "README.rst"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers", 
+    "Programming Language :: Python",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.optional-dependencies]
+win32 = [
+    "pywin32",
+    "winpaths",
+]
+
+[tool.setuptools]
+packages = ["platform_utils"]
+zip-safe = false
