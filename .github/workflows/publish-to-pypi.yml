@@ -59,11 +59,28 @@ jobs:
       id-token: write
 
     steps:
+    - uses: actions/checkout@v4
     - name: Download all the dists
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
+    - name: Install Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+    - name: Update version with git hash
+      run: |
+        pip install wheel
+        HASH=$(git rev-parse --short HEAD)
+        for wheel in dist/*.whl; do
+          NEW_WHEEL=$(echo $wheel | sed "s/-\([0-9.]*\)-/-\1.dev${HASH}-/")
+          mv "$wheel" "$NEW_WHEEL"
+        done
+        for sdist in dist/*.tar.gz; do
+          NEW_SDIST=$(echo $sdist | sed "s/-\([0-9.]*\)\./-\1.dev${HASH}./")
+          mv "$sdist" "$NEW_SDIST"
+        done
     - name: Publish distribution 📦 to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
