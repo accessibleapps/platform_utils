@@ -1,20 +1,27 @@
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "platform_utils"
-version = "1.5.4"
+version = "1.5.7"
 authors = [
     {name = "Christopher Toth", email = "q@q-continuum.net"},
 ]
 description = "Cross-platform utilities for accomplishing some tasks that the stdlib isn't equipped to provide"
 readme = "README.rst"
 license = {file = "LICENSE"}
+requires-python = ">=3.7"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers", 
-    "Programming Language :: Python",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8", 
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries",
 ]
@@ -23,6 +30,6 @@ dependencies = [
     "winpaths; sys_platform == 'win32'",
 ]
 
-[tool.setuptools]
-packages = ["platform_utils"]
-zip-safe = false
+[project.urls]
+Homepage = "https://github.com/q-continuum/platform_utils"
+Issues = "https://github.com/q-continuum/platform_utils/issues"

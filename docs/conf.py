@@ -22,7 +22,7 @@ copyright = '2019, Christopher Toth, Tyler Spivey'
 author = 'Christopher Toth, Tyler Spivey'
 
 # The full version, including alpha/beta/rc tags
-release = '0.41'
+release = '1.5.7'
 
 # To prevent master file contents.rst not found.
 master_doc = 'index'
