@@ -26,8 +26,8 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
 ]
 dependencies = [
+    "platformdirs",
     "pywin32; sys_platform == 'win32'",
-    "winpaths; sys_platform == 'win32'",
 ]
 
 [project.urls]
