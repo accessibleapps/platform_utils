@@ -4,6 +4,7 @@ import platform
 import string
 import subprocess
 import sys
+import platformdirs
 
 
 def is_frozen():
@@ -21,13 +22,8 @@ is_mac = plat == "Darwin"
 is_linux = plat == "Linux"
 is_pyinstaller = is_frozen() and getattr(sys, '_MEIPASS', False)
 
-# ugly little monkeypatch to make the winpaths module work on Python 3
-if is_windows:
-    import ctypes
-    import ctypes.wintypes
-
-    ctypes.wintypes.create_unicode_buffer = ctypes.create_unicode_buffer
-    import winpaths
+# Import vendored winpaths functionality for get_program_files()
+from . import _winpaths
 
 try:
     unicode
@@ -46,7 +42,8 @@ def app_data_path(app_name):
     """
     """Requires the name of the application"""
     if is_windows:
-        path = winpaths.get_appdata()
+        # Use roaming=True to match winpaths.get_appdata() behavior (AppData\Roaming)
+        return platformdirs.user_data_dir(app_name, roaming=True)
     elif is_mac:
         path = os.path.join(os.path.expanduser(
             "~"), "Library", "Application Support")
