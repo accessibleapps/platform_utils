@@ -149,14 +149,8 @@ def module_path(level=2):
 
 
 def documents_path():
-    """On windows, returns the path to My Documents. On OSX, returns the user's Documents folder. For anything else, returns the user's home directory."""
-    if is_windows:
-        path = winpaths.get_my_documents()
-    elif is_mac:
-        path = os.path.join(os.path.expanduser("~"), "Documents")
-    else:
-        path = os.path.expanduser("~")
-    return path
+    """Cross-platform method for getting the user's Documents directory."""
+    return platformdirs.user_documents_dir()
 
 
 def safe_filename(filename):
@@ -207,7 +201,4 @@ def start_file(path):
 
 def get_applications_path():
     """ """
-    if is_windows:
-        return winpaths.get_program_files()
-    elif is_mac:
-        return "/Applications"
+    return _winpaths.get_program_files()

@@ -47,10 +47,7 @@ if is_windows:
         return _get_path_buf(PathConstants.CSIDL_PROGRAM_FILES)
 
 else:
-    # Cross-platform fallbacks
+    # Non-Windows platforms
     def get_program_files():
-        """Returns a reasonable Program Files equivalent on non-Windows platforms."""
-        if platform.system() == "Darwin":
-            return "/Applications"
-        else:  # Linux and others
-            return "/usr/local"
+        """Returns None on non-Windows platforms as Program Files is a Windows-specific concept."""
+        return None
