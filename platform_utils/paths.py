@@ -1,10 +1,12 @@
 import inspect
 import os
 import platform
-import string
 import subprocess
 import sys
+
 import platformdirs
+
+from . import _winpaths
 
 
 def is_frozen():
@@ -13,17 +15,19 @@ def is_frozen():
     # This is what cffi (https://cffi.readthedocs.io) uses.
     import _imp
 
-    return hasattr(sys, "frozen") or '__compiled__' in globals() or _imp.is_frozen("__main__")
+    return (
+        hasattr(sys, "frozen")
+        or "__compiled__" in globals()
+        or _imp.is_frozen("__main__")
+    )
 
 
 plat = platform.system()
 is_windows = plat == "Windows"
 is_mac = plat == "Darwin"
 is_linux = plat == "Linux"
-is_pyinstaller = is_frozen() and getattr(sys, '_MEIPASS', False)
+is_pyinstaller = is_frozen() and getattr(sys, "_MEIPASS", False)
 
-# Import vendored winpaths functionality for get_program_files()
-from . import _winpaths
 
 try:
     unicode
@@ -43,10 +47,9 @@ def app_data_path(app_name):
     """Requires the name of the application"""
     if is_windows:
         # Use roaming=True to match winpaths.get_appdata() behavior (AppData\Roaming)
-        return platformdirs.user_data_dir(app_name, roaming=True)
+        path = platformdirs.user_data_dir(roaming=True)
     elif is_mac:
-        path = os.path.join(os.path.expanduser(
-            "~"), "Library", "Application Support")
+        path = os.path.join(os.path.expanduser("~"), "Library", "Application Support")
     elif is_linux:
         path = os.path.expanduser("~")
         app_name = ".%s" % app_name.replace(" ", "_")
@@ -59,7 +62,7 @@ def prepare_app_data_path(app_name):
     """Creates the application's data directory, given its name.
 
     Args:
-      app_name: 
+      app_name:
 
     Returns:
 
@@ -71,7 +74,7 @@ def prepare_app_data_path(app_name):
 def embedded_data_path():
     """ """
     if is_mac and is_frozen():
-        return os.path.join(os.path.abspath(get_executable()), 'Contents', 'MacOS')
+        return os.path.join(os.path.abspath(get_executable()), "Contents", "MacOS")
     return app_path()
 
 
@@ -132,6 +135,7 @@ def is_interactive():
 
     """
     import __main__
+
     return not hasattr(__main__, "__file__")
 
 
@@ -157,15 +161,14 @@ def safe_filename(filename):
     """Given a filename, returns a safe version with no characters that would not work on different platforms.
 
     Args:
-      filename: 
+      filename:
 
     Returns:
 
     """
     SAFE_FILE_CHARS = "'-_.()[]{}!@#$%^&+=`~ "
     filename = unicode(filename)
-    new_filename = "".join(
-        c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
+    new_filename = "".join(c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
     # Windows doesn't like directory names ending in space, macs consider filenames beginning with a dot as hidden, and windows removes dots at the ends of filenames.
     return new_filename.strip(" .")
 
@@ -174,7 +177,7 @@ def ensure_path(path):
     """Ensure existence of a path by creating all subdirectories.
 
     Args:
-      path: 
+      path:
 
     Returns:
 
@@ -188,7 +191,7 @@ def start_file(path):
     """
 
     Args:
-      path: 
+      path:
 
     Returns:
 
