@@ -1,15 +1,19 @@
+from __future__ import annotations
+
 import inspect
 import os
 import platform
 import subprocess
 import sys
+from types import ModuleType
+from typing import Optional, Union
 
 import platformdirs
 
 from . import _winpaths
 
 
-def is_frozen():
+def is_frozen() -> bool:
     """ """
     # imp was removed in Python 3.12, but _imp still contains is_frozen.
     # This is what cffi (https://cffi.readthedocs.io) uses.
@@ -22,20 +26,20 @@ def is_frozen():
     )
 
 
-plat = platform.system()
-is_windows = plat == "Windows"
-is_mac = plat == "Darwin"
-is_linux = plat == "Linux"
-is_pyinstaller = is_frozen() and getattr(sys, "_MEIPASS", False)
+plat: str = platform.system()
+is_windows: bool = plat == "Windows"
+is_mac: bool = plat == "Darwin"
+is_linux: bool = plat == "Linux"
+is_pyinstaller: bool = is_frozen() and getattr(sys, "_MEIPASS", False)
 
 
 try:
-    unicode
+    unicode  # type: ignore[name-defined]
 except NameError:
     unicode = str
 
 
-def app_data_path(app_name):
+def app_data_path(app_name: str) -> str:
     """Cross-platform method for determining where to put application data.
 
     Args:
@@ -58,7 +62,7 @@ def app_data_path(app_name):
     return os.path.join(path, app_name)
 
 
-def prepare_app_data_path(app_name):
+def prepare_app_data_path(app_name: str) -> str:
     """Creates the application's data directory, given its name.
 
     Args:
@@ -67,18 +71,18 @@ def prepare_app_data_path(app_name):
     Returns:
 
     """
-    dir = app_data_path(app_name)
-    return ensure_path(dir)
+    dir_path = app_data_path(app_name)
+    return ensure_path(dir_path)
 
 
-def embedded_data_path():
+def embedded_data_path() -> str:
     """ """
     if is_mac and is_frozen():
         return os.path.join(os.path.abspath(get_executable()), "Contents", "MacOS")
     return app_path()
 
 
-def get_executable():
+def get_executable() -> str:
     """Returns the full executable path/name if frozen, or the full path/name of the main module if not."""
     if is_frozen():
         if not is_mac:
@@ -88,7 +92,7 @@ def get_executable():
         items = os.listdir(exedir)
         if "python" in items:
             items.remove("python")
-        return os.path.join(exedir, items[0])
+        return os.path.join(exedir, items[0]) if items else sys.executable
     # Not frozen
     try:
         import __main__
@@ -98,7 +102,7 @@ def get_executable():
         return sys.argv[0]
 
 
-def get_module(level=2):
+def get_module(level: int = 2) -> str:
     """Hacky method for deriving the caller of this function's module.
 
     Args:
@@ -107,25 +111,28 @@ def get_module(level=2):
     Returns:
 
     """
-    return inspect.getmodule(inspect.stack()[level][0]).__file__
+    module: Optional[ModuleType] = inspect.getmodule(inspect.stack()[level][0])
+    if module is None or module.__file__ is None:
+        raise RuntimeError(f"Cannot determine module at stack level {level}")
+    return module.__file__
 
 
-def executable_directory():
+def executable_directory() -> str:
     """Always determine the directory of the executable, even when run with py2exe or otherwise frozen"""
     if is_pyinstaller:
-        return sys._MEIPASS
+        return getattr(sys, '_MEIPASS', '')
     executable = get_executable()
     path = os.path.abspath(os.path.dirname(executable))
     return path
 
 
-def app_path():
+def app_path() -> str:
     """ """
     path = executable_directory()
     return path
 
 
-def is_interactive():
+def is_interactive() -> bool:
     """Returns True if the script is being ran from the interactive interpreter.
         Can be useful for providing additional information when debugging.
 
@@ -139,7 +146,7 @@ def is_interactive():
     return not hasattr(__main__, "__file__")
 
 
-def module_path(level=2):
+def module_path(level: int = 2) -> str:
     """
 
     Args:
@@ -152,12 +159,12 @@ def module_path(level=2):
     return os.path.abspath(os.path.dirname(get_module(level)))
 
 
-def documents_path():
+def documents_path() -> str:
     """Cross-platform method for getting the user's Documents directory."""
     return platformdirs.user_documents_dir()
 
 
-def safe_filename(filename):
+def safe_filename(filename: Union[str, bytes]) -> str:
     """Given a filename, returns a safe version with no characters that would not work on different platforms.
 
     Args:
@@ -173,7 +180,7 @@ def safe_filename(filename):
     return new_filename.strip(" .")
 
 
-def ensure_path(path):
+def ensure_path(path: str) -> str:
     """Ensure existence of a path by creating all subdirectories.
 
     Args:
@@ -187,7 +194,7 @@ def ensure_path(path):
     return path
 
 
-def start_file(path):
+def start_file(path: str) -> None:
     """
 
     Args:
@@ -202,6 +209,6 @@ def start_file(path):
         subprocess.Popen(["open", path])
 
 
-def get_applications_path():
+def get_applications_path() -> Optional[str]:
     """ """
     return _winpaths.get_program_files()

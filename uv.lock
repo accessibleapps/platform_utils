@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.7"
 resolution-markers = [
     "python_full_version >= '3.9'",
@@ -9,7 +9,7 @@ resolution-markers = [
 
 [[package]]
 name = "platform-utils"
-version = "1.5.9"
+version = "1.5.10"
 source = { editable = "." }
 dependencies = [
     { name = "platformdirs", version = "4.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.8'" },

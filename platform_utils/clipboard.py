@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import platform
+from typing import Union
 
 
-def set_text_windows(text):
+def set_text_windows(text: str) -> None:
     """
 
     Args:
@@ -21,7 +24,7 @@ def set_text_windows(text):
         win32clipboard.CloseClipboard()
 
 
-def set_text_gtk(text):
+def set_text_gtk(text: str) -> None:
     """
 
     Args:
@@ -37,7 +40,7 @@ def set_text_gtk(text):
     cb.store()
 
 
-def set_text_osx(text):
+def set_text_osx(text: str) -> None:
     """
 
     Args:
@@ -46,27 +49,28 @@ def set_text_osx(text):
     Returns:
 
     """
-    scrap = True
+    scrap: bool = True
     try:
-        import Carbon.Scrap
+        import Carbon.Scrap  # type: ignore[import-not-found]
     except ModuleNotFoundError:
         scrap = False
     if scrap:
-        Carbon.Scrap.ClearCurrentScrap()
-        scrap = Carbon.Scrap.GetCurrentScrap()
-        scrap.PutScrapFlavor("TEXT", 0, text)
+        Carbon.Scrap.ClearCurrentScrap()  # type: ignore[attr-defined]
+        scrap_obj = Carbon.Scrap.GetCurrentScrap()  # type: ignore[attr-defined]
+        scrap_obj.PutScrapFlavor("TEXT", 0, text)  # type: ignore[attr-defined]
     else:
-        try:
-            text = text.encode()
-        except AttributeError:
-            pass
         import subprocess
 
+        try:
+            encoded_text = text.encode()
+        except AttributeError:
+            encoded_text = text if isinstance(text, bytes) else text.encode()
+        
         s = subprocess.Popen("pbcopy", stdin=subprocess.PIPE)
-        s.communicate(text)
+        s.communicate(encoded_text)
 
 
-def set_text(text):
+def set_text(text: str) -> None:
     """Copies text to the clipboard.
 
     Args:
@@ -89,7 +93,7 @@ def set_text(text):
 copy = set_text
 
 
-def get_text_windows():
+def get_text_windows() -> str:
     """ """
     import win32clipboard
     import win32con
@@ -99,23 +103,22 @@ def get_text_windows():
         text = win32clipboard.GetClipboardData(win32con.CF_UNICODETEXT)
     finally:
         win32clipboard.CloseClipboard()
-    return text
+    return str(text) if text is not None else ''
 
 
-def get_text_osx():
+def get_text_osx() -> str:
     """ """
     import subprocess
 
     s = subprocess.Popen("pbpaste", stdout=subprocess.PIPE)
     result = s.communicate()[0]
     try:
-        result = result.decode()
+        return result.decode()
     except UnicodeDecodeError:
-        pass
-    return result
+        return result.decode('utf-8', errors='ignore')
 
 
-def get_text():
+def get_text() -> str:
     """ """
     plat = platform.system()
     if plat == "Windows":

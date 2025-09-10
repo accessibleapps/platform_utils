@@ -30,6 +30,31 @@ dependencies = [
     "pywin32; sys_platform == 'win32'",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "mypy>=0.991,<1.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/q-continuum/platform_utils"
 Issues = "https://github.com/q-continuum/platform_utils/issues"
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = false
+warn_no_return = true
+warn_unreachable = false
+strict_equality = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = ["win32clipboard", "win32con", "win32api", "Carbon.*", "gtk"]
+ignore_missing_imports = true

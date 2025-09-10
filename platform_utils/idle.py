@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import platform
+from ctypes import Structure, c_uint
 
-system = platform.system()
+system: str = platform.system()
 
 
-def get_user_idle_time():
+def get_user_idle_time() -> float:
     """
 
     Args:
@@ -19,9 +22,9 @@ def get_user_idle_time():
     raise NotImplementedError("This function is not yet implemented for %s" % system)
 
 
-def get_user_idle_time_windows():
+def get_user_idle_time_windows() -> float:
     """ """
-    from ctypes import Structure, windll, c_uint, sizeof, byref
+    from ctypes import windll, sizeof, byref
 
     class LASTINPUTINFO(Structure):
         """ """
@@ -34,17 +37,23 @@ def get_user_idle_time_windows():
     return millis / 1000.0
 
 
-def get_user_idle_time_mac():
+def get_user_idle_time_mac() -> float:
     """ """
     import subprocess
     import re
 
     s = subprocess.Popen(("ioreg", "-c", "IOHIDSystem"), stdout=subprocess.PIPE)
-    data = s.communicate()[0]
+    data_bytes = s.communicate()[0]
     expression = "HIDIdleTime.*"
     try:
-        data = data.decode()
+        data_str = data_bytes.decode()
         r = re.compile(expression)
+        matches = r.findall(data_str)
     except UnicodeDecodeError:
-        r = re.compile(expression.encode())
-    return int(r.findall(data)[0].split(" = ")[1]) / 1000000000
+        data_str = data_bytes.decode('utf-8', errors='ignore')
+        r = re.compile(expression)
+        matches = r.findall(data_str)
+    
+    if matches:
+        return int(matches[0].split(" = ")[1]) / 1000000000
+    return 0.0
