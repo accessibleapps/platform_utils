@@ -53,7 +53,8 @@ def app_data_path(app_name: str) -> str:
         # Use roaming=True to match winpaths.get_appdata() behavior (AppData\Roaming)
         path = platformdirs.user_data_dir(roaming=True)
     elif is_mac:
-        path = os.path.join(os.path.expanduser("~"), "Library", "Application Support")
+        path = os.path.join(os.path.expanduser(
+            "~"), "Library", "Application Support")
     elif is_linux:
         path = os.path.expanduser("~")
         app_name = ".%s" % app_name.replace(" ", "_")
@@ -175,7 +176,8 @@ def safe_filename(filename: Union[str, bytes]) -> str:
     """
     SAFE_FILE_CHARS = "'-_.()[]{}!@#$%^&+=`~ "
     filename = unicode(filename)
-    new_filename = "".join(c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
+    new_filename = "".join(
+        c for c in filename if c in SAFE_FILE_CHARS or c.isalnum())
     # Windows doesn't like directory names ending in space, macs consider filenames beginning with a dot as hidden, and windows removes dots at the ends of filenames.
     return new_filename.strip(" .")
 
