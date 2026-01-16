@@ -212,5 +212,7 @@ def start_file(path: str) -> None:
 
 
 def get_applications_path() -> Optional[str]:
-    """ """
+    """Return the system applications directory."""
+    if is_mac:
+        return "/Applications"
     return _winpaths.get_program_files()
