@@ -77,9 +77,17 @@ def prepare_app_data_path(app_name: str) -> str:
 
 
 def embedded_data_path() -> str:
-    """ """
+    """Return the path where embedded data files are stored.
+
+    On Mac py2app bundles, this is Contents/Resources.
+    On Windows py2exe/PyInstaller, this is the executable directory.
+    """
     if is_mac and is_frozen():
-        return os.path.join(os.path.abspath(get_executable()), "Contents", "MacOS")
+        # sys.executable is in Contents/MacOS/python
+        # Data files are in Contents/Resources
+        exedir = os.path.dirname(sys.executable)  # Contents/MacOS
+        bundle_contents = os.path.dirname(exedir)  # Contents
+        return os.path.join(bundle_contents, "Resources")
     return app_path()
 
 
