@@ -7,7 +7,6 @@ sensible defaults.
 """
 from __future__ import annotations
 
-import os
 import platform
 from typing import Optional
 
@@ -41,7 +40,7 @@ if is_windows:
     
     def _get_path_buf(csidl: int) -> str:
         path_buf = wintypes.create_unicode_buffer(wintypes.MAX_PATH)  # type: ignore[attr-defined]
-        result = _SHGetFolderPath(0, csidl, 0, 0, path_buf)
+        _SHGetFolderPath(0, csidl, 0, 0, path_buf)
         return str(path_buf.value)
     
     def get_program_files() -> Optional[str]:
