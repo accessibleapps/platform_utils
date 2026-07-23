@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import platform
-from typing import Union
 
 
 def set_text_windows(text: str) -> None:
@@ -33,7 +32,7 @@ def set_text_gtk(text: str) -> None:
     Returns:
 
     """
-    import gtk
+    import gtk  # type: ignore[import-not-found]
 
     cb = gtk.Clipboard()
     cb.set_text(text)

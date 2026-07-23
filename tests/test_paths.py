@@ -29,6 +29,7 @@ class TestCrossPlatformPaths(unittest.TestCase):
         if platform.system() == "Windows":
             # On Windows, should return Program Files path
             self.assertIsInstance(result, str)
+            assert result is not None
             self.assertIn("Program Files", result)
         else:
             # On non-Windows, should return None

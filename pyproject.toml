@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "platform_utils"
-version = "1.6.2"
+version = "1.6.3"
 authors = [
     {name = "Christopher Toth", email = "q@q-continuum.net"},
 ]
@@ -42,6 +42,10 @@ Issues = "https://github.com/q-continuum/platform_utils/issues"
 [tool.pyright]
 pythonVersion = "3.8"
 typeCheckingMode = "strict"
+include = [
+    "platform_utils",
+    "tests",
+]
 reportUnusedImport = "warning"
 reportUnusedVariable = "warning"
 reportDuplicateImport = "error"
@@ -57,5 +61,6 @@ reportIncompatibleVariableOverride = "error"
 exclude = [
     "**/__pycache__",
     "**/node_modules",
+    ".venv",
     ".git",
 ]
